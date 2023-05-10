@@ -1,0 +1,25 @@
+apiVersion: troubleshoot.sh/v1beta2
+kind: Preflight
+metadata:
+  name: preflight-checks
+spec:
+  analyzers:
+    - customResourceDefinition:
+        strict: true
+        customResourceDefinitionName: istiooperators.install.istio.io
+        outcomes:
+          - fail:
+              message: The istiooperators CRD was not found in the cluster.
+          - pass:
+              message: istiooperators CRD is installed and available.
+    - deploymentStatus:
+        strict: true
+        name: istiod
+        namespace: istio-system
+        outcomes:
+          - fail:
+              when: "< 1"
+              message: The istiod deployment does not have any ready replicas.
+          - pass:
+              when: "= 1"
+              message: The istiod deployment is present.
