@@ -11,7 +11,7 @@ spec:
         outcomes:
           - fail:
               when: "< 1"
-              message: The linkerd-destination deployment does not have any ready replicas.
+              message: The linkerd-destination deployment is not present.
           - pass:
               when: "= 1"
               message: The linkerd-destination deployment is present.
@@ -22,7 +22,7 @@ spec:
         outcomes:
           - fail:
               when: "< 1"
-              message: The linkerd-identity deployment does not have any ready replicas.
+              message: The linkerd-identity deployment is not present.
           - pass:
               when: "= 1"
               message: The linkerd-identity deployment is present.
@@ -33,7 +33,7 @@ spec:
         outcomes:
           - fail:
               when: "< 1"
-              message: The linkerd-proxy-injector deployment does not have any ready replicas.
+              message: The linkerd-proxy-injector deployment is not present.
           - pass:
               when: "= 1"
               message: The linkerd-proxy-injector deployment is present.
