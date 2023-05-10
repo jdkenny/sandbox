@@ -19,10 +19,32 @@ spec:
         outcomes:
           - fail:
               when: "< 1"
-              message: The istiod deployment does not have any ready replicas.
+              message: The istiod deployment is not present.
           - pass:
               when: "= 1"
               message: The istiod deployment is present.
+     - deploymentStatus:
+        strict: true
+        name: istio-egressgateway
+        namespace: istio-system
+        outcomes:
+          - fail:
+              when: "< 1"
+              message: The istio-egressgateway deployment is not present.
+          - pass:
+              when: "= 1"
+              message: The istio-egressgateway deployment is present.
+    - deploymentStatus:
+        strict: true
+        name: istio-ingressgateway
+        namespace: istio-system
+        outcomes:
+          - fail:
+              when: "< 1"
+              message: The istio-ingressgateway deployment is not present.
+          - pass:
+              when: "= 1"
+              message: The istio-ingressgateway deployment is present.
     - clusterPodStatuses:
         strict: true
         name: unhealthy
