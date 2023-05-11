@@ -91,7 +91,7 @@ spec:
           - warn:
               message: "Unexpected response"
     - systemPackages:
-        collectorName: system-packages
+        collectorName: system-packages-nvidia
         outcomes:
         - fail:
             when: '{{ not .IsInstalled }}'
