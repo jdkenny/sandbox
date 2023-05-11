@@ -1,0 +1,100 @@
+apiVersion: troubleshoot.sh/v1beta2
+kind: SupportBundle
+metadata:
+  name: example
+spec:
+  hostCollectors:
+    - cpu: {}
+    - memory: {}
+    - hostOS: {}
+    - diskUsage:
+        collectorName: root-disk
+        path: /
+    - http:
+        collectorName: get-replicated-app
+        get:
+          url: https://replicated.app
+    - systemPackages:
+        collectorName: system-packages
+        ubuntu:
+          - vim
+        centos:
+          - vim
+  hostAnalyzers:
+    - cpu:
+        checkName: "Number of CPUs"
+        outcomes:
+          - fail:
+              when: "count < 2"
+              message: At least 2 CPU cores are required, and 4 CPU cores are recommended
+          - warn:
+              when: "count < 4"
+              message: At least 4 CPU cores are recommended
+          - pass:
+              message: This server has at least 4 CPU cores
+    - memory:
+        checkName: "Amount of Memory"
+        outcomes:
+          - fail:
+              when: "< 4G"
+              message: At least 4G of memory is required, and 8G of memory is recommended
+          - warn:
+              when: "< 8G"
+              message: At least 8G of memory is recommended
+          - pass:
+              message: The system has at least 8G of memory
+    - hostOS:
+        outcomes:
+          - pass:
+              when: "centos = 7"
+              message: "CentOS 7 is supported"
+          - pass:
+              when: "centos = 8"
+              message: "CentOS 8 is supported"
+          - fail:
+              when: "ubuntu = 16.04"
+              message: "Ubuntu 16.04 is not supported"
+          - pass:
+              when: "ubuntu = 18.04"
+              message: "Ubuntu 18.04 is supported"
+          - pass:
+              when: "ubuntu = 20.04"
+              message: "Ubuntu 20.04 is supported"
+    - diskUsage:
+        checkName: "Root Disk at least 50Gi"
+        collectorName: root-disk
+        outcomes:
+          - fail:
+              when: "total < 50Gi"
+              message: The disk containing directory / has less than 30Gi of total space
+          - fail:
+              when: "used/total > 80%"
+              message: The disk containing directory / is more than 80% full
+          - warn:
+              when: "used/total > 60%"
+              message: The disk containing directory / is more than 60% full
+          - warn:
+              when: "available < 10Gi"
+              message: The disk containing directory / has less than 10Gi of disk space available
+          - pass:
+              message: The disk containing directory / has at least 30Gi of total space, has at least 10Gi of disk space available, and is less than 60% full
+    - http:
+        checkName: Can Access Replicated API
+        collectorName: get-replicated-app
+        outcomes:
+          - warn:
+              when: "error"
+              message: Error connecting to https://replicated.app
+          - pass:
+              when: "statusCode == 200"
+              message: Connected to https://replicated.app
+          - warn:
+              message: "Unexpected response"
+    - systemPackages:
+        collectorName: system-packages
+        outcomes:
+        - fail:
+            when: '{{ not .IsInstalled }}'
+            message: Package {{ .Name }} is not installed
+        - pass:
+            message: Package {{ .Name }} is installed
