@@ -4,12 +4,12 @@ os=$(uname -s)
 arch=$(uname -m)
 current_version="v0.59.0"
 url="https://github.com/replicatedhq/troubleshoot/releases/download"
-preflight_yaml="https://raw.githubusercontent.com/chasehainey/sandbox/main/preflight.yaml"
+preflight_yaml="https://raw.githubusercontent.com/jdkenny/sandbox/main/preflight.yaml"
 if [ "$2" == "v2" ]
 then
-	supportbundle_yaml="https://raw.githubusercontent.com/chasehainey/sandbox/main/support-bundle-v2.yaml"
+	supportbundle_yaml="https://raw.githubusercontent.com/jdkenny/sandbox/main/support-bundle-v2.yaml"
 else
-	supportbundle_yaml="https://raw.githubusercontent.com/chasehainey/sandbox/main/support-bundle.yaml"
+	supportbundle_yaml="https://raw.githubusercontent.com/jdkenny/sandbox/main/support-bundle.yaml"
 fi
 
 cleanup(){
