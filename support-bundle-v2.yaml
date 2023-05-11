@@ -36,6 +36,12 @@ spec:
         collectorName: system-packages-rhel
         rhel:
           - container-tools
+    - systemPackages:
+        collectorName: system-packages-nvidia
+        ubuntu:
+          - nvidia-device-plugin
+        rhel:
+          - nvidia-device-plugin
     - tcpPortStatus:
         collectorName: host-https-port
         port: 443
