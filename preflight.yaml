@@ -90,11 +90,17 @@ spec:
               message: Connected to https://replicated.app
           - warn:
               message: "Unexpected response"
-    - systemPackages:
-        collectorName: system-packages-nvidia
+    - clusterResource:
+        checkName: Check PVC is RWX
+        kind: pvc
+        name: task-pv-claim
+        namespace: default
+        yamlPath: "spec.accessModes.[0]"
+        expectedValue: ReadWriteMany
         outcomes:
-        - fail:
-            when: '{{ not .IsInstalled }}'
-            message: Package {{ .Name }} is not installed
-        - pass:
-            message: Package {{ .Name }} is installed
+            - fail:
+                when: "false"
+                message: is not RWX
+            - pass:
+                when: "true"
+                message: is RWX
