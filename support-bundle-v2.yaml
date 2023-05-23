@@ -376,3 +376,17 @@ spec:
               message: Port 6784 is open
           - warn:
               message: Unexpected port status
+   - clusterResource:
+        checkName: Check PVC is RWX
+        kind: pvc
+        name: task-pv-claim
+        namespace: default
+        yamlPath: "spec.accessModes.[0]"
+        expectedValue: ReadWriteMany
+        outcomes:
+            - fail:
+                when: "false"
+                message: is not RWX
+            - pass:
+                when: "true"
+                message: is RWX
